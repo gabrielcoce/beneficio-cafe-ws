@@ -1,5 +1,6 @@
 package com.umg.ws.bc.controllers;
 
+import com.umg.ws.bc.exceptions.CustomExceptionHandler;
 import com.umg.ws.bc.models.ERole;
 import com.umg.ws.bc.models.Role;
 import com.umg.ws.bc.models.User;
@@ -12,6 +13,7 @@ import com.umg.ws.bc.repository.UserRepository;
 import com.umg.ws.bc.security.jwt.AuthTokenFilter;
 import com.umg.ws.bc.security.jwt.JwtUtils;
 import com.umg.ws.bc.security.services.UserDetailsImpl;
+import com.umg.ws.bc.services.AuthService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +50,13 @@ public class AuthController {
     @Autowired
     JwtUtils jwtUtils;
 
+    private AuthService authService;
+
     private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
+
+    public AuthController(AuthService authService){
+       this.authService = authService;
+    }
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -72,8 +80,10 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) throws Exception {
-        if (userRepository.existsByUsername(signUpRequest.getUsername())) {
+    public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest)  {
+
+        authService.userRegister(signUpRequest);
+        /*if (userRepository.existsByUsername(signUpRequest.getUsername())) {
             return ResponseEntity
                     .badRequest()
                     .body(new MessageResponse("Error: Username is already taken!"));
@@ -83,8 +93,9 @@ public class AuthController {
             return ResponseEntity
                     .badRequest()
                     .body(new MessageResponse("Error: Email is already in use!"));
-        }
-        try {
+        }*/
+
+        /*try {
             // Create new user's account
             User user = new User(signUpRequest.getUsername(),
                     signUpRequest.getEmail(),
@@ -151,7 +162,7 @@ public class AuthController {
         } catch (Exception e) {
             logger.error("error " + e.getMessage());
             throw new Exception("error", e.getCause());
-        }
-
+        }*/
+        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
 }
