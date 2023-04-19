@@ -5,6 +5,7 @@ import com.umg.ws.bc.security.jwt.AuthEntryPointJwt;
 import com.umg.ws.bc.security.jwt.AuthTokenFilter;
 import com.umg.ws.bc.security.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -30,6 +31,7 @@ public class WebSecurityConfig {
     UserDetailsServiceImpl userDetailsService;
 
     @Autowired
+    @Qualifier("authEntryPointJwt")
     private AuthEntryPointJwt unauthorizedHandler;
 
     @Bean

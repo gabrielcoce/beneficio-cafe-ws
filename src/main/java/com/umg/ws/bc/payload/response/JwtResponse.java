@@ -1,25 +1,29 @@
 package com.umg.ws.bc.payload.response;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.List;
 import java.util.UUID;
 
+@Getter
+@Setter
 public class JwtResponse {
-    private String token;
-    private String type = "Bearer";
-    private UUID id;
     private String username;
-    private String email;
+    private String accessToken;
+    /* private String tokenType = "Bearer";
+     private UUID id;*/
+
+    //private String email;
     private List<String> roles;
 
-    public JwtResponse(String accessToken, UUID id, String username, String email, List<String> roles) {
-        this.token = accessToken;
-        this.id = id;
+    public JwtResponse(String username, String accessToken, List<String> roles) {
         this.username = username;
-        this.email = email;
+        this.accessToken = accessToken;
         this.roles = roles;
     }
 
-    public String getAccessToken() {
+    /*public String getAccessToken() {
         return token;
     }
 
@@ -61,5 +65,5 @@ public class JwtResponse {
 
     public List<String> getRoles() {
         return roles;
-    }
+    }*/
 }
